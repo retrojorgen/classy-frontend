@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Velkommen til Avisretur</title>
+    <!-- build:css app.css -->
+    <link href="assets/libraries/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="bower_components/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/classy.css" rel="stylesheet">
+    <!-- endbuild -->
+</head>
+<body ng-app="Avisretur">
+
+    <header class="page-header no-print">
+        <div class="two-split-col" ng-class="{'content-wrapper': !user}">
+
+            <div class="logo-and-info">
+                <a ng-href="/" class="logo"><img src="assets/images/logo.svg"></a>
+            </div>
+            <nav class="main-menu">
+                <!-- logged in menu -->
+                <ul class="top-level-list" ng-if="user" ng-cloak>
+                    <li class="top-level-item-container" ng-if="user.retailer">
+                        <a ng-href="#!/forhandler/kuponger" class="top-level-item"><span class="fa fa-ticket"></span><span class="top-level-title">Kuponger</span></a>
+                    </li><li class="top-level-item-container" ng-if="user.retailer">
+                            <span class="top-level-item include-arrow"><span class="fa fa-refresh"></span><span class="top-level-title">Retur</span>
+                                <ul class="sub-level-list">
+                                    <li class="sub-level-item-container">
+                                        <a ng-href="#!/forhandler/retur/avis/enkeltpakke" class="sub-level-item">Avis enkeltpakke</a>
+                                    </li>
+                                    <li class="sub-level-item-container">
+                                        <a ng-href="#!/forhandler/retur/avis/flere-pakker" class="sub-level-item">Avis flere pakker</a>
+                                    </li>
+                                    <li class="sub-level-item-container">
+                                        <a ng-href="#!/forhandler/retur/magasin" class="sub-level-item">Blad / magasin</a>
+                                    </li>
+                                    <li class="sub-level-item-container">
+                                        <a ng-href="#!/forhandler/pakke-arkiv/avis" class="sub-level-item">Endre pakker</a>
+                                    </li>
+                                    <li class="sub-level-item-container">
+                                        <a ng-href="#!/forhandler/retur/retur-ikke-plukket-opp" class="sub-level-item">Retur ikke hentet</a>
+                                    </li>
+                                </ul>
+                            </span>
+                    </li><li class="top-level-item-container" ng-if="user.retailer">
+                    <span class="top-level-item include-arrow"><span class="fa fa-truck"></span><span class="top-level-title">Leveranse</span>
+                            <ul class="sub-level-list">
+                                <li class="sub-level-item-container">
+                                    <a ng-href="#!/forhandler/leveranse/feil-i-avisleveranse" class="sub-level-item">Feil i avisleveranse</a>
+                                </li>
+                                <li class="sub-level-item-container">
+                                    <a ng-href="#!/forhandler/leveranse/feil-i-magasinleveranse" class="sub-level-item">Feil i magasinleveranse</a>
+
+                                </li>
+                                <li class="sub-level-item-container">
+                                    <a ng-href="#!/forhandler/leveranse/midlertidig-stopp" class="sub-level-item">Midlertidig stopp</a>
+                                </li>
+                            </ul>
+                        </span>
+
+                    </li>
+                    <li class="top-level-item-container" ng-if="user.retailer">
+                        <span class="top-level-item include-arrow">
+                            <span class="fa fa-area-chart"></span><span class="top-level-title">Rapporter</span>
+                            <ul class="sub-level-list">
+                                <li class="sub-level-item-container">
+                                    <a ng-href="#!/forhandler/rapporter/retur-per-maned" class="sub-level-item">Retur per måned</a>
+                                </li>
+                                <li class="sub-level-item-container">
+                                    <a ng-href="#!/forhandler/rapporter/retur-per-uke" class="sub-level-item">Retur per uke</a>
+                                </li>
+                                <li class="sub-level-item-container">
+                                    <a ng-href="#!/forhandler/pakke-arkiv/avis" class="sub-level-item">Pakkearkiv Avis</a>
+                                </li>
+                                <li class="sub-level-item-container">
+                                    <a ng-href="#!/forhandler/pakke-arkiv/magasin" class="sub-level-item">Pakkearkiv Magasin</a>
+                                </li>
+                            </ul>
+                        </span></li><li class="top-level-item-container" ng-if="user.retailer">
+                        <a ng-href="#!/forhandler/beskjeder" class="top-level-item">
+                            <span class="fa fa-envelope-o"></span><span class="top-level-title">Beskjeder</span>
+                        </a>
+                    </li><li class="top-level-item-container logged-in" ng-if="user.retailer && !user.tokenData.newspaper">
+                            <span class="top-level-item include-arrow">
+                                <a ng-href="#!/user"><span class="fa fa-shopping-cart"></span><span class="top-level-title">{{user.retailer.name}}</span></a>
+                                <ul class="sub-level-list">
+                                    <li class="sub-level-item-container">
+                                        <a ng-href="#!/logg-ut" class="sub-level-item">Logg ut</a>
+                                    </li>
+                                </ul>
+                            </span>
+                    </li><li class="top-level-item-container impersonate-user-bar" ng-if="(user && user.tokenData.newspaper) || user.tokenData.roles.indexOf('NEWSPAPER') > -1"><impersonate></impersonate></li><li class="top-level-item-container logged-in newspaper" ng-if="(user && user.tokenData.newspaper) || user.tokenData.roles.indexOf('NEWSPAPER') > -1">
+                        <span class="top-level-item include-arrow">
+                            <a ng-href="#!/user"><span class="fa fa-newspaper-o"></span><span class="top-level-title">{{user.tokenData.sub}}</span></a>
+                            <ul class="sub-level-list">
+                                <li class="sub-level-item-container">
+                                    <a ng-href="#!/logg-ut" class="sub-level-item">Logg ut</a>
+                                </li>
+                            </ul>
+                        </span>
+                    </li><li class="top-level-item-container">
+                        <button class="toggle-avisretur" ng-if="user && user.retailer" ng-click="toggleInfoBar()">
+                            <span class="fa fa-bars" ng-if="!showInfoBar"></span>
+                            <span class="fa fa-arrow-right" ng-if="showInfoBar"></span>
+                        </button>
+                    </li>
+                </ul>
+
+
+                <!-- logged out menu -->
+                <ul class="top-level-list unlogged-user" ng-if="!user" ng-cloak>
+                    <li class="top-level-item-container">
+                        <a ng-href="#!/info/" class="top-level-item">Informasjon</a>
+                    </li><li class="top-level-item-container">
+                        <a ng-href="#!/info/kontakt-oss" class="top-level-item">Kontakt</a>
+                    </li><li class="top-level-item-container">
+                        <a ng-href="#!/info/om-avisretur" class="top-level-item">Om Avisretur</a>
+                    </li>
+                </ul>
+                <!-- logged out menu end -->
+            </nav>
+        </div>
+    </header>
+
+    <div role="main" ng-cloak class="main-view clear" id="main-view">
+        <div class="main-rows clear" ng-class="{'seventy': showInfoBar}">
+            <ng-view ng-class="{'login-inner': !user}"></ng-view>
+        </div>
+        <info-bar class="info-bar clear no-print" ng-class="{'thirty': showInfoBar}"></info-bar>
+    </div>
+
+    <div class="tips-overlay" ng-if="tipsToggle" ng-cloak>
+        <div class="tips-backdrop" ng-cloak>
+            <div class="tips-container" ng-cloak>
+
+            </div>
+            <button ng-click="toggleTips()"><span class="fa fa-close"></span>Lukk</button>
+
+        </div>
+    </div>
+
+    <footer class="no-print"></footer>
+
+    <!-- build:js app.js -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-jwt/dist/angular-jwt.js"></script>
+    <script src="bower_components/a0-angular-storage/dist/angular-storage.js"></script>
+    <script src="bower_components/angular-ui/build/angular-ui.js"></script>
+    <script src="bower_components/angular-ui/build/angular-ui.js"></script>
+    <script src="bower_components/angular-i18n/angular-locale_nb-no.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angulartics/dist/angulartics.min.js"></script>
+    <script src="bower_components/angulartics-google-analytics/dist/angulartics-ga.min.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+
+    <script src="assets/scripts/js/app.js"></script>
+
+    <script src="assets/scripts/js/non-angular/matrixMoveHandler.js"></script>
+
+    <script src="assets/scripts/js/controllers/userController.js"></script>
+    <script src="assets/scripts/js/controllers/impersonateController.js"></script>
+    <script src="assets/scripts/js/controllers/infoController.js"></script>
+    <script src="assets/scripts/js/controllers/loginController.js"></script>
+    <script src="assets/scripts/js/controllers/logoutController.js"></script>
+    <script src="assets/scripts/js/controllers/couponController.js"></script>
+    <script src="assets/scripts/js/controllers/routeHandlerController.js"></script>
+    <script src="assets/scripts/js/controllers/infoBarController.js"></script>
+    <script src="assets/scripts/js/controllers/singlePackageReturnController.js"></script>
+    <script src="assets/scripts/js/controllers/multiplePackagesReturnController.js"></script>
+    <script src="assets/scripts/js/controllers/messagesController.js"></script>
+    <script src="assets/scripts/js/controllers/weeklyReturnReportController.js"></script>
+    <script src="assets/scripts/js/controllers/monthlyReturnReportController.js"></script>
+    <script src="assets/scripts/js/controllers/footerController.js"></script>
+    <script src="assets/scripts/js/controllers/packageArchiveNewspaperController.js"></script>
+    <script src="assets/scripts/js/controllers/packageArchiveMagazineController.js"></script>
+    <script src="assets/scripts/js/controllers/impersonateViewController.js"></script>
+    <script src="assets/scripts/js/controllers/newspaperDeliveryComplaintController.js"></script>
+    <script src="assets/scripts/js/controllers/magazineDeliveryComplaintController.js"></script>
+    <script src="assets/scripts/js/controllers/magazineReturnController.js"></script>
+    <script src="assets/scripts/js/controllers/temporaryStopController.js"></script>
+    <script src="assets/scripts/js/controllers/returnNotPickedUpController.js"></script>
+
+    <script src="assets/scripts/js/services/authService.js"></script>
+    <script src="assets/scripts/js/services/underscoreService.js"></script>
+    <script src="assets/scripts/js/services/dialogService.js"></script>
+    <script src="assets/scripts/js/services/utilsService.js"></script>
+    <!-- endbuild -->
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-100368763-1', 'auto');
+
+    </script>
+</body>
+</html>
